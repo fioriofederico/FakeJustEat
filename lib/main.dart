@@ -50,8 +50,32 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  List ordine = [{
+    "id":"1",
+    "nomeProdotto": "Pizza Margherita",
+    "costo": 5.00,
+    "quantita":1
+  },
+    {
+      "id":"3",
+      "nomeProdotto": "Pizza Boscaiola",
+      "costo": 6.50,
+      "quantita":1
+    },{
+      "id":"487349",
+      "nomeProdotto": "Pizza 4 Formaggi",
+      "costo": 7.00,
+      "quantita":5
+    },
+    {
+      "id":"33",
+      "nomeProdotto": "Pizza 4 Formaggi",
+      "costo": 7.00,
+      "quantita":6
+    },
+  ];
 
-  Widget getRow(String name, double price, int quantity){
+  Widget getRow(String name, double price, int quantity, int index){
     return Card(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -66,7 +90,10 @@ class _MyHomePageState extends State<MyHomePage> {
             children: <Widget>[
               TextButton(
                 child: const Text('-'),
-                onPressed: () {/* ... */},
+                onPressed: () {
+                  setState(() {
+                    ordine[index]["quantita"]--;
+                });},
               ),
               const SizedBox(width: 8),
               TextButton(
@@ -76,7 +103,11 @@ class _MyHomePageState extends State<MyHomePage> {
               const SizedBox(width: 8),
               TextButton(
                 child: const Text('+'),
-                onPressed: () {/* ... */},
+                onPressed: () {
+                  setState(() {
+                    ordine[index]["quantita"]++;
+                  });
+                },
               ),
               const SizedBox(width: 8),
             ],
@@ -105,30 +136,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
 
-    List ordine = [{
-      "id":"1",
-      "nomeProdotto": "Pizza Margherita",
-      "costo": 5.00,
-      "quantita":1
-    },
-      {
-        "id":"3",
-        "nomeProdotto": "Pizza Boscaiola",
-        "costo": 6.50,
-        "quantita":1
-      },{
-        "id":"487349",
-        "nomeProdotto": "Pizza 4 Formaggi",
-        "costo": 7.00,
-        "quantita":5
-      },
-      {
-        "id":"33",
-        "nomeProdotto": "Pizza 4 Formaggi",
-        "costo": 7.00,
-        "quantita":6
-      },
-    ];
+
     /*List ordine1 = ["Margherita","Mozzarella e Pomodoro",4.50, 4];
     List ordine2 = ["Boscaiola","Mozzarella e Funghi",5, 3];
     List ordine3 = ["4 Formaggi","Fontina, Mozzarella, Gorgonzola e bufala",6,2];
@@ -151,7 +159,7 @@ class _MyHomePageState extends State<MyHomePage> {
             itemCount: ordine.length,
             itemBuilder: (context, index){
           return Center(
-            child: getRow(ordine[index]["nomeProdotto"], ordine[index]["costo"], ordine[index]["quantita"]),
+            child: getRow(ordine[index]["nomeProdotto"], ordine[index]["costo"], ordine[index]["quantita"], index),
           );
         }),
       )
