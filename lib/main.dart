@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Just Eat Demo',
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: 'Just Eat Demo'),
     );
   }
 }
@@ -149,15 +149,54 @@ class _MyHomePageState extends State<MyHomePage> {
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
-      body: Container(
-        child: ListView.builder(
-            itemCount: ordine.length,
-            itemBuilder: (context, index){
-          return Center(
-            child: getRow(ordine[index]["nomeProdotto"], ordine[index]["costo"], ordine[index]["quantita"], index),
-          );
-        }),
-      )
+      body:
+          Row(
+            children: [
+              ListView.builder(
+                  itemCount: ordine.length,
+                  itemBuilder: (context, index){
+                    return Center(
+                        child:
+                        getRow(ordine[index]["nomeProdotto"], ordine[index]["costo"], ordine[index]["quantita"], index)
+                    );
+                  }),
+
+              ListView.builder(
+                  itemCount: ordine.length,
+                  itemBuilder: (context, index){
+                    return Center(
+                        child:Card(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              ListTile(
+                                leading: Icon(Icons.album),
+                                title: Text('Totale '),
+                                subtitle: Text('Prezzo'),
+                              ),
+                            ],
+                          ),
+                        ),
+                    );
+                  }),
+              Expanded(
+                child: Align(
+                  alignment: Alignment.bottomLeft,
+                  child: Row(
+                    children: [
+                      Flexible(
+                        fit: FlexFit.tight,
+                        child: ElevatedButton(
+                          onPressed: () {},
+                          child: const Text('Effettua Ordine'),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
     );
   }
 }
