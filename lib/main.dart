@@ -91,6 +91,7 @@ class _MyHomePageState extends State<MyHomePage> {
               TextButton(
                 child: const Text('-'),
                 onPressed: () {
+                  if(ordine[index]["quantita"] == 0) return;
                   setState(() {
                     ordine[index]["quantita"]--;
                 });},
@@ -135,12 +136,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-
-
-    /*List ordine1 = ["Margherita","Mozzarella e Pomodoro",4.50, 4];
-    List ordine2 = ["Boscaiola","Mozzarella e Funghi",5, 3];
-    List ordine3 = ["4 Formaggi","Fontina, Mozzarella, Gorgonzola e bufala",6,2];
-    List ordine = [ordine1, ordine2, ordine3];*/
 
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
