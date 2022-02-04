@@ -50,6 +50,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  bool isButtonActive = false;
   List ordine = [
     {
     "id":"1",
@@ -79,7 +80,7 @@ class _MyHomePageState extends State<MyHomePage> {
       "id":"1",
       "nomeProdotto": "Pizza Funghi e Salsiccia",
       "costo": 5.00,
-      "quantita":1
+      "quantita":0
     },
   ];
   dynamic totale = 0.0;
@@ -100,11 +101,14 @@ class _MyHomePageState extends State<MyHomePage> {
               TextButton(
                 child: const Text('-'),
                 onPressed: () {
-                  if(ordine[index]["quantita"] == 0 && totale == 0 && pezzi == 0) return;
+                  if(ordine[index]["quantita"] == 0 || totale == 0 || pezzi == 0) return;
                   setState(() {
                     ordine[index]["quantita"]--;
                     totale = totale - ordine[index]["costo"];
                     pezzi --;
+                    if(totale < 20){
+                      isButtonActive = false;
+                    }
                 });},
               ),
               const SizedBox(width: 8),
@@ -120,6 +124,9 @@ class _MyHomePageState extends State<MyHomePage> {
                     ordine[index]["quantita"]++;
                     totale += ordine[index]["costo"];
                     pezzi ++;
+                    if(totale >= 20){
+                      isButtonActive = true;
+                    }
                   });
                 },
               ),
@@ -181,7 +188,9 @@ class _MyHomePageState extends State<MyHomePage> {
             children: [
               Text("Numero Pezzi ${pezzi}"),
               Text("Totale ${totale}"),
-              ElevatedButton(onPressed: null, child: Text("Completa il tuo ordine"))
+              ElevatedButton(onPressed: isButtonActive ? (){} : null,
+                  child: Text("Completa il tuo ordine"),
+              )
             ],
           )
     ),
