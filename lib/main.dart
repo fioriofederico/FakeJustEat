@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.red,
       ),
       home: const MyHomePage(title: 'Just Eat Demo'),
     );
@@ -50,38 +50,47 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  List ordine = [{
+  List ordine = [
+    {
     "id":"1",
     "nomeProdotto": "Pizza Margherita",
     "costo": 5.00,
-    "quantita":1
+    "quantita":0
   },
     {
       "id":"3",
-      "nomeProdotto": "Pizza Boscaiola",
+      "nomeProdotto": "Pizza Boscaiola Rossa",
       "costo": 6.50,
-      "quantita":1
-    },{
+      "quantita":0
+    },
+    {
       "id":"487349",
       "nomeProdotto": "Pizza 4 Formaggi",
       "costo": 7.00,
-      "quantita":5
+      "quantita":0
     },
     {
       "id":"33",
-      "nomeProdotto": "Pizza 4 Formaggi",
+      "nomeProdotto": "Pizza Boscaiola Bianca",
       "costo": 7.00,
-      "quantita":6
+      "quantita":0
+    },
+    {
+      "id":"1",
+      "nomeProdotto": "Pizza Funghi e Salsiccia",
+      "costo": 5.00,
+      "quantita":1
     },
   ];
-
+  dynamic totale = 0.0;
+  dynamic pezzi = 0;
   Widget getRow(String name, double price, int quantity, int index){
     return Card(
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           ListTile(
-            leading: Icon(Icons.album),
+            leading: Icon(Icons.local_pizza_outlined),
             title: Text('Nome ${name}'),
             subtitle: Text('Prezzo ${price}'),
           ),
@@ -91,9 +100,11 @@ class _MyHomePageState extends State<MyHomePage> {
               TextButton(
                 child: const Text('-'),
                 onPressed: () {
-                  if(ordine[index]["quantita"] == 0) return;
+                  if(ordine[index]["quantita"] == 0 && totale == 0 && pezzi == 0) return;
                   setState(() {
                     ordine[index]["quantita"]--;
+                    totale = totale - ordine[index]["costo"];
+                    pezzi --;
                 });},
               ),
               const SizedBox(width: 8),
@@ -107,6 +118,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 onPressed: () {
                   setState(() {
                     ordine[index]["quantita"]++;
+                    totale += ordine[index]["costo"];
+                    pezzi ++;
                   });
                 },
               ),
@@ -149,54 +162,29 @@ class _MyHomePageState extends State<MyHomePage> {
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
-      body:
-          Row(
-            children: [
-              ListView.builder(
-                  itemCount: ordine.length,
-                  itemBuilder: (context, index){
-                    return Center(
-                        child:
-                        getRow(ordine[index]["nomeProdotto"], ordine[index]["costo"], ordine[index]["quantita"], index)
-                    );
-                  }),
+        body: Container(
+          padding: const EdgeInsets.all(16),
+          child:
+          ListView.builder(
+              itemCount: ordine.length,
+              itemBuilder: (context, index){
+                return Center(
+                    child:
+                    getRow(ordine[index]["nomeProdotto"], ordine[index]["costo"], ordine[index]["quantita"], index)
+                );
+              }),
+        ),
 
-              ListView.builder(
-                  itemCount: ordine.length,
-                  itemBuilder: (context, index){
-                    return Center(
-                        child:Card(
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              ListTile(
-                                leading: Icon(Icons.album),
-                                title: Text('Totale '),
-                                subtitle: Text('Prezzo'),
-                              ),
-                            ],
-                          ),
-                        ),
-                    );
-                  }),
-              Expanded(
-                child: Align(
-                  alignment: Alignment.bottomLeft,
-                  child: Row(
-                    children: [
-                      Flexible(
-                        fit: FlexFit.tight,
-                        child: ElevatedButton(
-                          onPressed: () {},
-                          child: const Text('Effettua Ordine'),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ),
+        bottomNavigationBar: Container(
+          height: 100,
+          child: Column(
+            children: [
+              Text("Numero Pezzi ${pezzi}"),
+              Text("Totale ${totale}"),
+              ElevatedButton(onPressed: null, child: Text("Completa il tuo ordine"))
             ],
-          ),
+          )
+    ),
     );
   }
 }
